@@ -1,0 +1,55 @@
+[versions]
+agp = "8.3.1"
+kotlin = "1.9.0"
+coreKtx = "1.13.0"
+junit = "4.13.2"
+junitVersion = "1.1.5"
+espressoCore = "3.5.1"
+appcompat = "1.6.1"
+material = "1.12.0"
+activity = "1.8.0"
+constraintlayout = "2.1.4"
+okhttpLoggingInterceptor = "5.0.0-alpha.11"
+chucker = "4.0.0"
+fragmentKtx = "1.2.0-alpha01"
+swipeRefreshLayout = "1.1.0"
+navigationFragment = "2.7.6"
+coil = "2.4.0"
+lifecycleExtensions = "2.2.0"
+lifecycleRuntimeKtx = "2.7.0"
+kotlinxCoroutinesAndroid = "1.7.3"
+lottie = "4.1.0"
+retrofit = "2.9.0"
+retrofitGson = "2.9.0"
+hilt = "2.47"
+hiltCompiler = "2.47"
+
+[libraries]
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
+material = { group = "com.google.android.material", name = "material", version.ref = "material" }
+androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
+hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
+hiltAndroidCompilerKapt = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltCompiler" }
+okhttpLoggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
+chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
+fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx"}
+swipeRefreshLayout = { group = "androidx.swiperefreshlayout",name = "swiperefreshlayout",version.ref = "swipeRefreshLayout"}
+navigationFragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragment"}
+coil = { group = "io.coil-kt",name = "coil",version.ref = "coil"}
+lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
+lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
+retrofit = {group = "com.squareup.retrofit2",name = "retrofit",version.ref = "retrofit"}
+retrofitGson = {group = "com.squareup.retrofit2",name = "converter-gson",version.ref = "retrofitGson"}
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+

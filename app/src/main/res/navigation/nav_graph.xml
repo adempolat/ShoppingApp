@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/navigation_product_list">
+
+    <fragment
+        android:id="@+id/navigation_product_list"
+        android:name="com.adempolat.eterationshoppingapp.ui.ProductListFragment"
+        android:label="Product List"
+        tools:layout="@layout/fragment_product_list" >
+        <action
+            android:id="@+id/action_navigation_product_list_to_productDetailFragment"
+            app:destination="@id/productDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_basket"
+        android:name="com.adempolat.eterationshoppingapp.ui.BasketFragment"
+        android:label="Basket"
+        tools:layout="@layout/fragment_basket" />
+
+    <fragment
+        android:id="@+id/navigation_favorites"
+        android:name="com.adempolat.eterationshoppingapp.ui.FavoriteFragment"
+        android:label="Favorites"
+        tools:layout="@layout/fragment_favorite" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.adempolat.eterationshoppingapp.ui.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/productDetailFragment"
+        android:name="com.adempolat.eterationshoppingapp.ui.ProductDetailFragment"
+        android:label="ProductDetailFragment" />
+</navigation>

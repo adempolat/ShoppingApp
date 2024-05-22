@@ -1,28 +1,27 @@
 [versions]
 agp = "8.3.1"
 kotlin = "1.9.0"
-coreKtx = "1.13.0"
+coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
-material = "1.12.0"
+material = "1.10.0"
 activity = "1.8.0"
 constraintlayout = "2.1.4"
-okhttpLoggingInterceptor = "5.0.0-alpha.11"
-chucker = "4.0.0"
-fragmentKtx = "1.2.0-alpha01"
-swipeRefreshLayout = "1.1.0"
-navigationFragment = "2.7.6"
-coil = "2.4.0"
-lifecycleExtensions = "2.2.0"
-lifecycleRuntimeKtx = "2.7.0"
-kotlinxCoroutinesAndroid = "1.7.3"
-lottie = "4.1.0"
+lifecycleCommon = "2.7.0"
 retrofit = "2.9.0"
-retrofitGson = "2.9.0"
-hilt = "2.47"
-hiltCompiler = "2.47"
+okhttp = "4.4.0"
+converterScalars = "2.1.0"
+kotlinxCoroutinesAndroid = "1.7.1"
+hiltAndroid = "2.48"
+navigationFragmentKtx = "2.7.7"
+navigationUiKtx = "2.7.7"
+lottie = "3.4.0"
+glide = "4.12.0"
+datastore = "1.0.0"
+room = "2.6.1"
+preferences = "1.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,23 +32,40 @@ androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-activity = { group = "androidx.activity", name = "activity", version.ref = "activity" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayout" }
-hilt = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
-hiltAndroidCompilerKapt = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltCompiler" }
-okhttpLoggingInterceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttpLoggingInterceptor" }
-chucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
-fragmentKtx = { group = "androidx.fragment", name = "fragment-ktx", version.ref = "fragmentKtx"}
-swipeRefreshLayout = { group = "androidx.swiperefreshlayout",name = "swiperefreshlayout",version.ref = "swipeRefreshLayout"}
-navigationFragment = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragment"}
-coil = { group = "io.coil-kt",name = "coil",version.ref = "coil"}
-lifecycle-extensions = { group = "androidx.lifecycle", name = "lifecycle-extensions", version.ref = "lifecycleExtensions" }
-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
-lottie = { group = "com.airbnb.android", name = "lottie", version.ref = "lottie" }
-retrofit = {group = "com.squareup.retrofit2",name = "retrofit",version.ref = "retrofit"}
-retrofitGson = {group = "com.squareup.retrofit2",name = "converter-gson",version.ref = "retrofitGson"}
+androidx-lifecycle-common = { module = "androidx.lifecycle:lifecycle-common", version.ref = "lifecycleCommon" }
+androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycleCommon" }
+androidx-lifecycle-runtime-ktx = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleCommon" }
+androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycleCommon" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okhttp" }
+okhttpLogging = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "converterScalars" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutinesAndroid" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesAndroid" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-compiler = { module = "com.google.dagger:hilt-compiler", version.ref = "hiltAndroid" }
+androidx-navigation-fragment-ktx = { group = "androidx.navigation", name = "navigation-fragment-ktx", version.ref = "navigationFragmentKtx" }
+androidx-navigation-ui-ktx = { group = "androidx.navigation", name = "navigation-ui-ktx", version.ref = "navigationUiKtx" }
+lottie = { module = "com.airbnb.android:lottie", version.ref = "lottie" }
+compiler = { module = "com.github.bumptech.glide:compiler", version.ref = "glide" }
+glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
+datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "datastore" }
+room = { module = "androidx.room:room-runtime", version.ref = "room" }
+roomCompiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+roomKtx = { module = "androidx.room:room-ktx", version.ref = "room" }
+preferences = { module = "androidx.preference:preference-ktx", version.ref = "preferences" }
+rxJava = { module = "io.reactivex.rxjava2:rxjava", version = "2.1.1" }
+rxAndroid = { module = "io.reactivex.rxjava2:rxandroid", version = "2.1.1" }
+legacySupport = { module = "androidx.legacy:legacy-support-v4", version = "1.0.0" }
+retrofitRxJava = { module = "com.squareup.retrofit2:adapter-rxjava2", version.ref = "retrofit" }
+lifeCycleExtensions = { module = "androidx.lifecycle:lifecycle-extensions", version = "2.2.0" }
+navigationFragment = { module = "androidx.navigation:navigation-fragment", version.ref = "navigationFragmentKtx" }
+navigationUi = { module = "androidx.navigation:navigation-ui", version.ref = "navigationUiKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
-
+kotlinKapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid"  }
+safeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigationFragmentKtx" }

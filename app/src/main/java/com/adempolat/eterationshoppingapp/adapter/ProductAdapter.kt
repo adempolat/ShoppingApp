@@ -48,9 +48,18 @@ class ProductAdapter(private var productList: List<Product>,
             it.findNavController().navigate(R.id.action_navigation_product_list_to_productDetailFragment, bundle)
         }
 
+        val product2 = Product(
+            id = product.id ?: "",
+            name = product.name ?: "",
+            description = product.description ?: "",
+            imageUrl = product.imageUrl ?: "",
+            price = product.price ?: 0.0,
+        )
+
+
 
         holder.binding.buttonAddToCart.setOnClickListener {
-            cartViewModel.addToCart(product)
+            cartViewModel.addToCart(product2)
         }
 
     }

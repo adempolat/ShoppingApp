@@ -38,7 +38,6 @@ class ProductDetailFragment : Fragment() {
 
         val product = Product(
             id = arguments?.getString("productId") ?: "",
-            createdAt = arguments?.getString("createdAt") ?:"",
             name = productName ?: "",
             description = productDescription ?: "",
             imageUrl = productImageUrl ?: "",

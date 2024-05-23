@@ -24,8 +24,15 @@ class CartViewModel : ViewModel() {
     private val _cartItemCount = MutableLiveData<Int>()
     val cartItemCount: LiveData<Int> get() = _cartItemCount
 
+    private val _totalSpent = MutableLiveData<Double>()
+    val totalSpent: LiveData<Double> get() = _totalSpent
+
+    private val _purchaseHistory = MutableLiveData<MutableList<Pair<Double, String>>>(mutableListOf())
+    val purchaseHistory: LiveData<MutableList<Pair<Double, String>>> get() = _purchaseHistory
+
     init {
         loadCartItems()
+        _totalSpent.value = 1000.0 // Başlangıç değeri
     }
 
     private fun loadCartItems() {
@@ -92,6 +99,15 @@ class CartViewModel : ViewModel() {
         }
     }
 
+    fun clearCart() {
+        viewModelScope.launch {
+            ShoppingApp.database.cartDao().clearCart()
+            _cartItems.value = mutableListOf()
+            _totalPrice.value = 0.0
+            _cartItemCount.value = 0
+        }
+    }
+
     private fun calculateTotalPrice() {
         val currentList = _cartItems.value ?: mutableListOf()
         var total = 0.0
@@ -108,5 +124,16 @@ class CartViewModel : ViewModel() {
             count += item.quantity
         }
         _cartItemCount.value = count
+    }
+
+    fun updateTotalSpent(amount: Double) {
+        val currentSpent = _totalSpent.value ?: 0.0
+        _totalSpent.value = currentSpent + amount
+    }
+
+    fun addPurchaseHistory(amount: Double, time: String) {
+        val currentHistory = _purchaseHistory.value ?: mutableListOf()
+        currentHistory.add(Pair(amount, time))
+        _purchaseHistory.value = currentHistory
     }
 }

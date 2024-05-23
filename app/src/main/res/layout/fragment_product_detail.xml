@@ -11,7 +11,13 @@
         android:id="@+id/product_image"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:scaleType="centerCrop" />
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/product_name"
@@ -33,6 +39,19 @@
         app:layout_constraintBottom_toTopOf="@+id/buttonAddToCart"
         app:layout_constraintTop_toBottomOf="@+id/product_name"
         tools:layout_editor_absoluteX="16dp" />
+
+    <ImageButton
+        android:id="@+id/favoriteButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_margin="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        app:layout_constraintEnd_toEndOf="@+id/product_image"
+        app:layout_constraintTop_toTopOf="@+id/product_image"
+        app:srcCompat="@drawable/ic_favorite_border"
+        app:tint="?attr/colorControlNormal" />
 
 
     <TextView

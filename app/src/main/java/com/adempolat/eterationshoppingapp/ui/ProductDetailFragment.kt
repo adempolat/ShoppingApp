@@ -6,11 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.adempolat.eterationshoppingapp.R
 import com.adempolat.eterationshoppingapp.data.Product
 import com.adempolat.eterationshoppingapp.databinding.FragmentProductDetailBinding
 import com.adempolat.eterationshoppingapp.databinding.FragmentProfileBinding
+import com.adempolat.eterationshoppingapp.utils.Constants
 import com.adempolat.eterationshoppingapp.viewmodel.CartViewModel
+import com.adempolat.eterationshoppingapp.viewmodel.ProductViewModel
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
 
 class ProductDetailFragment : Fragment() {
@@ -18,6 +22,7 @@ class ProductDetailFragment : Fragment() {
     private var _binding: FragmentProductDetailBinding? = null
     private val binding get() = _binding!!
     private val cartViewModel: CartViewModel by activityViewModels()
+    private val productViewModel: ProductViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -42,15 +47,32 @@ class ProductDetailFragment : Fragment() {
             description = productDescription ?: "",
             imageUrl = productImageUrl ?: "",
             price = productPrice ?: 0.0,
+            createdAt = arguments?.getString("createdAt")?: ""
         )
 
         binding.productName.text = productName
         binding.productDescription.text = productDescription
         binding.productPrice.text = String.format("%.2f$", product.price)
-        Glide.with(binding.productImage).load(productImageUrl)
+
+        Glide.with(binding.productImage.context)
+            .load(Constants.FAKE_IMAGE)
+            .placeholder(R.drawable.bg_button_add_to_cart) // placeholder resmi (isteğe bağlı)
+            .into(binding.productImage)
+
+        binding.favoriteButton.setImageResource(
+            if (product.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+        )
+
+        binding.favoriteButton.setOnClickListener {
+            productViewModel.toggleFavorite(product)
+            binding.favoriteButton.setImageResource(
+                if (product.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+            )
+        }
 
         binding.buttonAddToCart.setOnClickListener {
             cartViewModel.addToCart(product)
+            Snackbar.make(binding.root, "Ürün sepete eklendi", Snackbar.LENGTH_SHORT).show()
         }
     }
 

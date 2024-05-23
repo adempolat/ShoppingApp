@@ -38,7 +38,7 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductAdapter(emptyList(),cartViewModel)
+        productAdapter = ProductAdapter(productViewModel,emptyList(),cartViewModel)
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = productAdapter
@@ -55,7 +55,7 @@ class ProductListFragment : Fragment() {
             }
         })}
 
-        productViewModel.products.observe(viewLifecycleOwner) { products ->
+        productViewModel.filteredProducts.observe(viewLifecycleOwner) { products ->
             productAdapter.updateProducts(products)
             isLoading = false
         }
@@ -70,6 +70,11 @@ class ProductListFragment : Fragment() {
                 return true
             }
         })
+
+        binding.filterButton.setOnClickListener {
+            val filterFragment = FilterFragment()
+            filterFragment.show(parentFragmentManager, "FilterFragment")
+        }
     }
 
     override fun onDestroyView() {

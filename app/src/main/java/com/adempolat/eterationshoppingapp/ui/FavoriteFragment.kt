@@ -1,28 +1,50 @@
 package com.adempolat.eterationshoppingapp.ui
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.adempolat.eterationshoppingapp.R
-import com.adempolat.eterationshoppingapp.databinding.FragmentBasketBinding
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.adempolat.eterationshoppingapp.databinding.FragmentFavoriteBinding
-import com.adempolat.eterationshoppingapp.databinding.FragmentProductListBinding
+import com.adempolat.eterationshoppingapp.viewmodel.CartViewModel
+import com.adempolat.eterationshoppingapp.viewmodel.ProductViewModel
+import com.example.shoppingapp.ui.ProductAdapter
+
 
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
+    private val productViewModel: ProductViewModel by activityViewModels()
+    private val cartViewModel: CartViewModel by activityViewModels()
+    private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
+    ): View {
         _binding = FragmentFavoriteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
+        productAdapter = ProductAdapter(productViewModel, emptyList(),cartViewModel)
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = productAdapter
+        }
+
+        productViewModel.favoriteProducts.observe(viewLifecycleOwner) { products ->
+            productAdapter.updateProducts(products)
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 }

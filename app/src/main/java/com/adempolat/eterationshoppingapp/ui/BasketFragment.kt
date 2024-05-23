@@ -1,5 +1,6 @@
 package com.adempolat.eterationshoppingapp.ui
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,6 +15,10 @@ import com.adempolat.eterationshoppingapp.data.CartItem
 import com.adempolat.eterationshoppingapp.databinding.FragmentBasketBinding
 import com.adempolat.eterationshoppingapp.databinding.FragmentProductListBinding
 import com.adempolat.eterationshoppingapp.viewmodel.CartViewModel
+import com.google.android.material.snackbar.Snackbar
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 
 class BasketFragment : Fragment() {
@@ -41,6 +46,13 @@ class BasketFragment : Fragment() {
 
         cartViewModel.cartItems.observe(viewLifecycleOwner, Observer { cartItems ->
             basketAdapter.submitList(cartItems)
+            if (cartItems.isEmpty()) {
+                binding.recyclerView.visibility = View.GONE
+                binding.emptyBasketMessage.visibility = View.VISIBLE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.emptyBasketMessage.visibility = View.GONE
+            }
         })
 
         cartViewModel.totalPrice.observe(viewLifecycleOwner, Observer { totalPrice ->
@@ -48,8 +60,35 @@ class BasketFragment : Fragment() {
         })
 
         binding.completeButton.setOnClickListener {
-            // Sipariş tamamlanma işlemi buraya eklenebilir.
+            showConfirmationDialog()
         }
+    }
+
+    private fun showConfirmationDialog() {
+        val totalPrice = cartViewModel.totalPrice.value ?: 0.0
+        val message = "%.2f\$  değerindeki ürünleri satın almak istediğinizden emin misiniz?"
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Satın Alma Onayı")
+            .setMessage(message.format(totalPrice))
+            .setPositiveButton("Evet") { dialog, _ ->
+                completePurchase(totalPrice)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Hayır") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .create()
+            .show()
+    }
+
+    private fun completePurchase(totalPrice: Double) {
+        val purchaseTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
+        cartViewModel.addPurchaseHistory(totalPrice, purchaseTime)
+        cartViewModel.clearCart()
+        Snackbar.make(binding.root, "Tebrikler, satın alımınız gerçekleşti", Snackbar.LENGTH_LONG).show()
+        // Profile ekranındaki toplam harcama tutarını güncelleme
+        cartViewModel.updateTotalSpent(totalPrice)
     }
 
 }

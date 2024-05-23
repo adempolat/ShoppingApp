@@ -3,9 +3,13 @@ package com.adempolat.eterationshoppingapp.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.adempolat.eterationshoppingapp.R
 import com.adempolat.eterationshoppingapp.data.CartItem
 import com.adempolat.eterationshoppingapp.databinding.ItemBasketBinding
+import com.adempolat.eterationshoppingapp.utils.Constants
 import com.adempolat.eterationshoppingapp.viewmodel.CartViewModel
+import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 
 class BasketAdapter(private val cartViewModel: CartViewModel) : RecyclerView.Adapter<BasketAdapter.BasketViewHolder>() {
 
@@ -23,6 +27,10 @@ class BasketAdapter(private val cartViewModel: CartViewModel) : RecyclerView.Ada
         holder.binding.productName.text = cartItem.product.name
         holder.binding.productPrice.text = "${cartItem.product.price}$"
         holder.binding.quantity.text = cartItem.quantity.toString()
+        Glide.with(holder.binding.productImageView.context)
+            .load(Constants.FAKE_IMAGE)
+            .placeholder(R.drawable.bg_button_add_to_cart) // placeholder resmi (isteğe bağlı)
+            .into(holder.binding.productImageView)
 
         holder.binding.increaseButton.setOnClickListener {
             cartViewModel.increaseQuantity(cartItem)
@@ -34,6 +42,7 @@ class BasketAdapter(private val cartViewModel: CartViewModel) : RecyclerView.Ada
                 cartViewModel.decreaseQuantity(cartItem)
             } else {
                 cartViewModel.removeFromCart(cartItem.product)
+                Snackbar.make(holder.binding.root, "${cartItem.product.name} sepetten çıkartıldı.", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

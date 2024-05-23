@@ -32,7 +32,7 @@ class CartViewModel : ViewModel() {
 
     init {
         loadCartItems()
-        _totalSpent.value = 1000.0 // Başlangıç değeri
+        _totalSpent.value = 0.0 // Başlangıç değeri
     }
 
     private fun loadCartItems() {

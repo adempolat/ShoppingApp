@@ -38,7 +38,7 @@ class ProductListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductAdapter(productViewModel,emptyList(),cartViewModel)
+        productAdapter = ProductAdapter(productViewModel,emptyList(),cartViewModel,this)
         binding.recyclerView.apply {
             layoutManager = GridLayoutManager(context, 2)
             adapter = productAdapter

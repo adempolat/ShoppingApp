@@ -46,7 +46,7 @@
         <ImageButton
             android:id="@+id/favoriteButton"
             android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_height="60dp"
             android:layout_margin="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
@@ -60,11 +60,11 @@
 
 
     <Button
+        android:layout_marginTop="6dp"
         android:id="@+id/buttonAddToCart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_button_add_to_cart"
-        android:layout_marginTop="8dp"
         android:text="Add to Cart" />
 
 

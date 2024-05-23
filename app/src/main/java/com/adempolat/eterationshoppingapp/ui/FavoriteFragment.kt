@@ -32,7 +32,7 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductAdapter(productViewModel, emptyList(),cartViewModel)
+        productAdapter = ProductAdapter(productViewModel, emptyList(),cartViewModel,this)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = productAdapter

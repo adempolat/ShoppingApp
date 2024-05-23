@@ -3,12 +3,14 @@ package com.example.shoppingapp.ui
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.adempolat.eterationshoppingapp.R
 import com.adempolat.eterationshoppingapp.data.Product
 import com.adempolat.eterationshoppingapp.databinding.ItemProductBinding
+import com.adempolat.eterationshoppingapp.ui.FavoriteFragment
 import com.adempolat.eterationshoppingapp.utils.Constants
 import com.adempolat.eterationshoppingapp.viewmodel.CartViewModel
 import com.adempolat.eterationshoppingapp.viewmodel.ProductViewModel
@@ -18,7 +20,8 @@ import com.google.android.material.snackbar.Snackbar
 
 class ProductAdapter(private val productViewModel: ProductViewModel,
                      private var productList: List<Product>,
-                     private val cartViewModel: CartViewModel
+                     private val cartViewModel: CartViewModel,
+                     private val fragment: Fragment
 ) : RecyclerView.Adapter<ProductAdapter.ProductViewHolder>() {
 
     private var filteredProductList: List<Product> = productList
@@ -47,9 +50,7 @@ class ProductAdapter(private val productViewModel: ProductViewModel,
 
         holder.binding.favoriteButton.setOnClickListener {
             productViewModel.toggleFavorite(product)
-            holder.binding.favoriteButton.setImageResource(
-                if (product.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
-            )
+            notifyItemChanged(position)
         }
 
 
@@ -61,8 +62,12 @@ class ProductAdapter(private val productViewModel: ProductViewModel,
                 putString("productPrice", product.price.toString())
                 putString("productImageUrl", product.imageUrl)
             }
-            it.findNavController().navigate(R.id.action_navigation_product_list_to_productDetailFragment, bundle)
-        }
+            val action = if (fragment is FavoriteFragment) {
+                R.id.action_navigation_favorites_to_productDetailFragment
+            } else {
+                R.id.action_navigation_product_list_to_productDetailFragment
+            }
+            it.findNavController().navigate(action, bundle)        }
 
         val product2 = Product(
             id = product.id ?: "",

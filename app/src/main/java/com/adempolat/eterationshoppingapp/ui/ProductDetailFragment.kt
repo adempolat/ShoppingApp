@@ -40,6 +40,8 @@ class ProductDetailFragment : Fragment() {
         val productDescription = arguments?.getString("productDescription")
         val productPrice = arguments?.getString("productPrice")?.toDoubleOrNull()
         val productImageUrl = arguments?.getString("productImageUrl")
+        val isFavorite = arguments?.getBoolean("isFavorite") ?: false
+
 
         val product = Product(
             id = arguments?.getString("productId") ?: "",
@@ -47,7 +49,8 @@ class ProductDetailFragment : Fragment() {
             description = productDescription ?: "",
             imageUrl = productImageUrl ?: "",
             price = productPrice ?: 0.0,
-            createdAt = arguments?.getString("createdAt")?: ""
+            createdAt = arguments?.getString("createdAt")?: "",
+            isFavorite = isFavorite
         )
 
         binding.productName.text = productName
@@ -65,6 +68,7 @@ class ProductDetailFragment : Fragment() {
 
         binding.favoriteButton.setOnClickListener {
             productViewModel.toggleFavorite(product)
+            product.isFavorite = !product.isFavorite
             binding.favoriteButton.setImageResource(
                 if (product.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
             )

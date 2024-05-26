@@ -61,6 +61,7 @@ class ProductAdapter(private val productViewModel: ProductViewModel,
                 putString("productDescription", product.description)
                 putString("productPrice", product.price.toString())
                 putString("productImageUrl", product.imageUrl)
+                putBoolean("isFavorite", product.isFavorite) // Favori durumu
             }
             val action = if (fragment is FavoriteFragment) {
                 R.id.action_navigation_favorites_to_productDetailFragment
@@ -92,9 +93,11 @@ class ProductAdapter(private val productViewModel: ProductViewModel,
     }
 
     fun updateProducts(newProductList: List<Product>) {
+        val diffCallback = ProductDiffCallback(filteredProductList, newProductList)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         productList = newProductList
         filteredProductList = newProductList
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     fun filter(query: String) {
@@ -105,14 +108,24 @@ class ProductAdapter(private val productViewModel: ProductViewModel,
         }
         notifyDataSetChanged()
     }
+
+    class ProductDiffCallback(
+        private val oldList: List<Product>,
+        private val newList: List<Product>
+    ) : DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int = oldList.size
+
+        override fun getNewListSize(): Int = newList.size
+
+        override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition].id == newList[newItemPosition].id
+        }
+
+        override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+            return oldList[oldItemPosition] == newList[newItemPosition]
+        }
+    }
 }
 
-class ProductDiffCallback : DiffUtil.ItemCallback<Product>() {
-    override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem.id == newItem.id
-    }
 
-    override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
-        return oldItem == newItem
-    }
-}

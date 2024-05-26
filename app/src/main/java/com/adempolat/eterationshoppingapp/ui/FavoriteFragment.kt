@@ -12,7 +12,6 @@ import com.adempolat.eterationshoppingapp.viewmodel.CartViewModel
 import com.adempolat.eterationshoppingapp.viewmodel.ProductViewModel
 import com.example.shoppingapp.ui.ProductAdapter
 
-
 class FavoriteFragment : Fragment() {
 
     private var _binding: FragmentFavoriteBinding? = null
@@ -32,14 +31,17 @@ class FavoriteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        productAdapter = ProductAdapter(productViewModel, emptyList(),cartViewModel,this)
+        productAdapter = ProductAdapter(productViewModel, productViewModel.favoriteProducts.value ?: emptyList(), cartViewModel, this)
         binding.recyclerView.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = productAdapter
         }
 
+        // Favorite products observer
         productViewModel.favoriteProducts.observe(viewLifecycleOwner) { products ->
             productAdapter.updateProducts(products)
+            // Debugging purpose
+            println("Favorite products: $products")
         }
     }
 

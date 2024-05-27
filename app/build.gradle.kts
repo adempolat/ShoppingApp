@@ -57,6 +57,7 @@ dependencies {
     testImplementation("org.mockito:mockito-core:3.9.0")
     testImplementation("androidx.test.ext:junit:1.1.3")
     testImplementation("androidx.test:core:1.4.0")
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation(libs.androidx.lifecycle.common)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)

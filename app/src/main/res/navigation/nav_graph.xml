@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    app:startDestination="@id/navigation_product_list">
+    app:startDestination="@id/onboardingFragment">
 
     <fragment
         android:id="@+id/navigation_product_list"
@@ -39,4 +39,13 @@
         android:id="@+id/productDetailFragment"
         android:name="com.adempolat.eterationshoppingapp.ui.ProductDetailFragment"
         android:label="ProductDetailFragment" />
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.adempolat.eterationshoppingapp.ui.OnboardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding" >
+        <action
+            android:id="@+id/action_onboardingFragment_to_navigation_product_list"
+            app:destination="@id/navigation_product_list" />
+    </fragment>
 </navigation>

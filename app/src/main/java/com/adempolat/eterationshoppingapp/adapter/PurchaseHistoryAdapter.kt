@@ -25,7 +25,7 @@ class PurchaseHistoryAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(amount: Double, time: String) {
-            binding.amountTextView.text = String.format("%.2f TL", amount)
+            binding.amountTextView.text = String.format("%.2f $", amount)
             binding.timeTextView.text = time
         }
     }

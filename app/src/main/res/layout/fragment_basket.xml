@@ -17,7 +17,7 @@
         android:id="@+id/emptyBasketMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sepetinizde ürün yok, hadi bir şeyler alalım!"
+        android:text="@string/no_data_basket"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"

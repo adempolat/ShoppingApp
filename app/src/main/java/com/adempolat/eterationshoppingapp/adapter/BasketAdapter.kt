@@ -42,7 +42,7 @@ class BasketAdapter(private val cartViewModel: CartViewModel) : RecyclerView.Ada
                 cartViewModel.decreaseQuantity(cartItem)
             } else {
                 cartViewModel.removeFromCart(cartItem.product)
-                Snackbar.make(holder.binding.root, "${cartItem.product.name} sepetten çıkartıldı.", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(holder.binding.root, "${cartItem.product.name} removed from basket", Snackbar.LENGTH_SHORT).show()
             }
         }
     }

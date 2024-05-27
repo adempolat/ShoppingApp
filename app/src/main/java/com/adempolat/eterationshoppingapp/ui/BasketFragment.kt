@@ -86,7 +86,8 @@ class BasketFragment : Fragment() {
         val purchaseTime = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault()).format(Date())
         cartViewModel.addPurchaseHistory(totalPrice, purchaseTime)
         cartViewModel.clearCart()
-        Snackbar.make(binding.root, "Tebrikler, satın alımınız gerçekleşti", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(binding.root,
+            getString(R.string.finish_shopping_message), Snackbar.LENGTH_LONG).show()
         // Profile ekranındaki toplam harcama tutarını güncelleme
         cartViewModel.updateTotalSpent(totalPrice)
     }

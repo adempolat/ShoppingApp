@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="Product Price"
+                android:text="@string/product_price"
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:textColor="#156FB6" />
@@ -39,7 +39,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:text="Product Name"
+                android:text="@string/product_name"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_button_add_to_cart"
-        android:text="Add to Cart" />
+        android:text="@string/add_to_cart" />
 
 
 </LinearLayout>

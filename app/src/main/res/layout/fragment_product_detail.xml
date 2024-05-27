@@ -74,7 +74,7 @@
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="#3949AB"
-        android:text="Price:"
+        android:text="@string/price"
         app:layout_constraintTop_toTopOf="@+id/buttonAddToCart"
         tools:text="Price:" />
 
@@ -99,7 +99,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="24dp"
         android:background="@drawable/bg_button_add_to_cart"
-        android:text="Add to Cart"
+        android:text="@string/add_to_cart"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

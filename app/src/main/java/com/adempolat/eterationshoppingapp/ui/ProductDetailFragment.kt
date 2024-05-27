@@ -84,7 +84,7 @@ class ProductDetailFragment : Fragment() {
 
         binding.buttonAddToCart.setOnClickListener {
             cartViewModel.addToCart(product)
-            Snackbar.make(binding.root, "Ürün sepete eklendi", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(binding.root, getString(R.string.add_to_cart), Snackbar.LENGTH_SHORT).show()
         }
     }
 

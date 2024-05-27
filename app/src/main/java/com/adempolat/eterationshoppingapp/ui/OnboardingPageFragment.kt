@@ -40,19 +40,19 @@ class OnboardingPageFragment : Fragment() {
         when (position) {
             0 -> {
                 binding.imageView.setImageResource(R.drawable.ss1)
-                binding.textView.text = "Tüm ürünleri tek bir ekranda listeleyebilir, arama yapabilir, sıralayabilirsiniz."
+                binding.textView.text = getString(R.string.onboarding_message_1)
             }
             1 -> {
                 binding.imageView.setImageResource(R.drawable.ss2)
-                binding.textView.text = "Ürünlerinizi sepete koyabilir, adetini belirleyebilirsiniz"
+                binding.textView.text = getString(R.string.onboarding_message_2)
             }
             2 -> {
                 binding.imageView.setImageResource(R.drawable.ss3)
-                binding.textView.text = "Ürünlerinizi favoriye alabilirsiniz, bu sayede uygulama kapansa bile burada görünmeye devam edecektir."
+                binding.textView.text = getString(R.string.onboarding_message_3)
             }
             3 -> {
                 binding.imageView.setImageResource(R.drawable.ss4)
-                binding.textView.text = "Profil resminizi değiştirebilir, geçmiş harcamalarınızı görebilirsiniz."
+                binding.textView.text = getString(R.string.onboarding_message_4)
             }
         }
     }

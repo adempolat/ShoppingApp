@@ -67,7 +67,7 @@ class ProfileFragment : Fragment() {
 
         // Toplam harcama tutarını güncelle
         cartViewModel.totalSpent.observe(viewLifecycleOwner) { totalSpent ->
-            binding.totalSpentTextView.text = String.format("Toplam Harcanan Tutar %.2f TL", totalSpent)
+            binding.totalSpentTextView.text = String.format(getString(R.string.total_amount_spent), totalSpent)
         }
 
         // Harcama geçmişini güncelle
@@ -121,9 +121,11 @@ class ProfileFragment : Fragment() {
             CoroutineScope(Dispatchers.Main).launch {
                 if (savedUri != null) {
                     saveImageUriToPrefs(savedUri)
-                    Toast.makeText(requireContext(), "Profil resmi kaydedildi: $savedUri", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.profile_picture_saved, savedUri), Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(requireContext(), "Profil resmi kaydedilemedi", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.profile_picture_not_saved), Toast.LENGTH_SHORT).show()
                 }
             }
         }

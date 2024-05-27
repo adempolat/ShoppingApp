@@ -83,7 +83,7 @@ class ProductAdapter(private val productViewModel: ProductViewModel,
 
         holder.binding.buttonAddToCart.setOnClickListener {
             cartViewModel.addToCart(product2)
-            Snackbar.make(holder.binding.root, "Ürün sepete eklendi", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(holder.binding.root, "Product added to basket", Snackbar.LENGTH_SHORT).show()
         }
 
     }

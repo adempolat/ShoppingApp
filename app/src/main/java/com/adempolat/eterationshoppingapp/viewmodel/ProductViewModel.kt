@@ -9,6 +9,9 @@ import com.adempolat.eterationshoppingapp.data.Product
 import com.adempolat.eterationshoppingapp.data.dao.toFavoriteItemEntity
 import com.adempolat.eterationshoppingapp.data.dao.toProduct
 import com.adempolat.eterationshoppingapp.repository.ProductRepository
+import com.adempolat.eterationshoppingapp.usecases.FilterProductsUseCase
+import com.adempolat.eterationshoppingapp.usecases.LoadProductsUseCase
+import com.adempolat.eterationshoppingapp.usecases.SortProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.firstOrNull
@@ -18,11 +21,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductViewModel @Inject constructor(
+    private val loadProductsUseCase: LoadProductsUseCase,
+    private val filterProductsUseCase: FilterProductsUseCase,
+    private val sortProductsUseCase: SortProductsUseCase,
     private val repository: ProductRepository
 ) : ViewModel() {
 
     enum class SortOrder {
-        Sort_Order,OLD_TO_NEW, NEW_TO_OLD, PRICE_HIGH_TO_LOW, PRICE_LOW_TO_HIGH, A_TO_Z, Z_TO_A
+        Sort_Order, OLD_TO_NEW, NEW_TO_OLD, PRICE_HIGH_TO_LOW, PRICE_LOW_TO_HIGH, A_TO_Z, Z_TO_A
     }
 
     private val _products = MutableLiveData<List<Product>>()
@@ -66,35 +72,31 @@ class ProductViewModel @Inject constructor(
 
     fun loadProducts() {
         viewModelScope.launch {
-            repository.getProducts(currentPage).collect { newProducts ->
-                val favorites = _favoriteProducts.value ?: listOf()
-                val updatedProducts = newProducts.map { product ->
-                    product.isFavorite = favorites.any { it.id == product.id }
-                    product
-                }
-                _products.value = updatedProducts
-                //_filteredProducts.value = updatedProducts // Başlangıçta tüm ürünler gelsin
-                applyFiltersAndSort()
+            val products = loadProductsUseCase(currentPage)
+            val favorites = _favoriteProducts.value ?: listOf()
+            val updatedProducts = products.map { product ->
+                product.isFavorite = favorites.any { it.id == product.id }
+                product
             }
+            _products.value = updatedProducts
+            applyFiltersAndSort()
         }
     }
 
     fun loadMoreProducts() {
         viewModelScope.launch {
             currentPage++
-            repository.getProducts(currentPage).collect { moreProducts ->
-                val favorites = _favoriteProducts.value ?: listOf()
-                val updatedProducts = moreProducts.map { product ->
-                    product.isFavorite = favorites.any { it.id == product.id }
-                    product
-                }
-                val currentList = _products.value ?: listOf()
-                _products.value = currentList + updatedProducts
-                applyFiltersAndSort()
+            val moreProducts = loadProductsUseCase(currentPage)
+            val favorites = _favoriteProducts.value ?: listOf()
+            val updatedProducts = moreProducts.map { product ->
+                product.isFavorite = favorites.any { it.id == product.id }
+                product
             }
+            val currentList = _products.value ?: listOf()
+            _products.value = currentList + updatedProducts
+            applyFiltersAndSort()
         }
     }
-
 
     fun setSortOrder(order: SortOrder) {
         sortOrder = order
@@ -112,33 +114,8 @@ class ProductViewModel @Inject constructor(
     }
 
     fun applyFiltersAndSort() {
-        val filteredList = filterProducts(_products.value ?: listOf())
-        _filteredProducts.value = sortProducts(filteredList)
-    }
-
-    private fun filterProducts(products: List<Product>): List<Product> {
-        var result = products
-
-        if (selectedBrands.isNotEmpty()) {
-            result = result.filter { it.brand in selectedBrands }
-        }
-        if (selectedModels.isNotEmpty()) {
-            result = result.filter { it.model in selectedModels }
-        }
-        filterProducts=result
-        return result
-    }
-
-    private fun sortProducts(products: List<Product>): List<Product> {
-        return when (sortOrder) {
-            SortOrder.OLD_TO_NEW -> products.sortedBy { it.createdAt }
-            SortOrder.NEW_TO_OLD -> products.sortedByDescending { it.createdAt }
-            SortOrder.PRICE_HIGH_TO_LOW -> products.sortedByDescending { it.price }
-            SortOrder.PRICE_LOW_TO_HIGH -> products.sortedBy { it.price }
-            SortOrder.A_TO_Z -> products.sortedBy { it.name }
-            SortOrder.Z_TO_A -> products.sortedByDescending { it.name }
-            else -> products
-        }
+        val filteredList = filterProductsUseCase(_products.value ?: listOf(), selectedBrands, selectedModels)
+        _filteredProducts.value = sortProductsUseCase(filteredList, sortOrder)
     }
 
     private fun updateFavoriteProducts() {
@@ -146,9 +123,6 @@ class ProductViewModel @Inject constructor(
             ShoppingApp.database.favoriteDao().getAllFavoriteItems().collect { favoriteItems ->
                 val favoriteProducts = favoriteItems.map { it.toProduct() }
                 _favoriteProducts.postValue(favoriteProducts)
-                // Debugging purpose
-                println("Loaded favorite products from DB: ${favoriteProducts.size} items")
-                // Update products list with favorite information
                 val currentProducts = _products.value?.map { product ->
                     product.isFavorite = favoriteProducts.any { it.id == product.id }
                     product
@@ -159,14 +133,10 @@ class ProductViewModel @Inject constructor(
     }
 
     fun loadFavoriteProducts() {
-        // Veritabanından favori ürünleri yükler
         viewModelScope.launch {
             ShoppingApp.database.favoriteDao().getAllFavoriteItems().collect { favoriteItems ->
                 val favoriteProducts = favoriteItems.map { it.toProduct() }
                 _favoriteProducts.postValue(favoriteProducts)
-                // Debugging purpose
-                println("Loaded favorite products from DB: ${favoriteProducts.size} items")
-                // Update products list with favorite information
                 val currentProducts = _products.value?.map { product ->
                     product.isFavorite = favoriteProducts.any { it.id == product.id }
                     product

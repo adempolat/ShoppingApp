@@ -17,4 +17,11 @@ class ProductRepository @Inject constructor(
         val products = apiService.getProducts(page)
         emit(products)
     }.flowOn(Dispatchers.IO)
+
+    fun loadBrandsAndModels(): Flow<Pair<List<String>, List<String>>> = flow {
+        val products = apiService.getProducts(1)  // İlk sayfayı alarak başlıyoruz
+        val brands = products.map { it.brand }.distinct()
+        val models = products.map { it.model }.distinct()
+        emit(Pair(brands, models))
+    }.flowOn(Dispatchers.IO)
 }

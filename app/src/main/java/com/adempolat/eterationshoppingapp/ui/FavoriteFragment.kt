@@ -39,9 +39,15 @@ class FavoriteFragment : Fragment() {
 
         // Favorite products observer
         productViewModel.favoriteProducts.observe(viewLifecycleOwner) { products ->
-            productAdapter.updateProducts(products)
-            // Debugging purpose
-            println("Favorite products: $products")
+            if (products.isEmpty()) {
+                binding.recyclerView.visibility = View.GONE
+                binding.noDataLayout.visibility = View.VISIBLE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
+                binding.noDataLayout.visibility = View.GONE
+                // Update the adapter with the products
+                productAdapter.updateProducts(products)
+            }
         }
     }
 

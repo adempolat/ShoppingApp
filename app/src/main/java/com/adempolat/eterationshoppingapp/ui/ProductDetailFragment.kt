@@ -36,11 +36,19 @@ class ProductDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Toolbar'ı ayarlıyoruz
+
+
         val productName = arguments?.getString("productName")
         val productDescription = arguments?.getString("productDescription")
         val productPrice = arguments?.getString("productPrice")?.toDoubleOrNull()
         val productImageUrl = arguments?.getString("productImageUrl")
         val isFavorite = arguments?.getBoolean("isFavorite") ?: false
+
+        binding.toolbar.title = productName
+        binding.toolbar.setNavigationOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
 
 
         val product = Product(
@@ -68,7 +76,7 @@ class ProductDetailFragment : Fragment() {
 
         binding.favoriteButton.setOnClickListener {
             productViewModel.toggleFavorite(product)
-            product.isFavorite = !product.isFavorite
+            //product.isFavorite = !product.isFavorite
             binding.favoriteButton.setImageResource(
                 if (product.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
             )

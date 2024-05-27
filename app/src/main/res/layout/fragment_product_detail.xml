@@ -4,8 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="0dp"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:titleTextColor="@android:color/white"
+        app:navigationIcon="@drawable/ic_back" />
 
     <ImageView
         android:id="@+id/product_image"
@@ -17,12 +28,13 @@
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <TextView
         android:id="@+id/product_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:textAppearance="?attr/textAppearanceHeadline6"
         app:layout_constraintTop_toBottomOf="@+id/product_image"
@@ -32,8 +44,9 @@
         android:id="@+id/product_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
         android:maxLines="10"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:textAppearance="?attr/textAppearanceBody1"
         app:layout_constraintBottom_toTopOf="@+id/buttonAddToCart"
@@ -53,16 +66,30 @@
         app:srcCompat="@drawable/ic_favorite_border"
         app:tint="?attr/colorControlNormal" />
 
+    <TextView
+        android:id="@+id/price_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="#3949AB"
+        android:text="Price:"
+        app:layout_constraintTop_toTopOf="@+id/buttonAddToCart"
+        tools:text="Price:" />
+
 
     <TextView
         android:id="@+id/product_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
         android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/buttonAddToCart"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/buttonAddToCart"
+        app:layout_constraintTop_toBottomOf="@+id/price_text"
         tools:text="1200 tl" />
 
     <Button
@@ -70,7 +97,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="24dp"
         android:background="@drawable/bg_button_add_to_cart"
         android:text="Add to Cart"
         app:layout_constraintBottom_toBottomOf="parent"

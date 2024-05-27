@@ -63,7 +63,7 @@ class FilterFragment : DialogFragment() {
         binding.applyButton.setOnClickListener {
             productViewModel.setSelectedBrands(selectedBrands)
             productViewModel.setSelectedModels(selectedModels)
-            productViewModel.applyFilters()
+            productViewModel.applyFiltersAndSort()
             dismiss()
         }
     }

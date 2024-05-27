@@ -100,7 +100,7 @@ class ProductListFragment : Fragment() {
                     3 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.A_TO_Z)
                     4 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.Z_TO_A)
                 }
-                productViewModel.applyFilters()
+                productViewModel.applyFiltersAndSort()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}

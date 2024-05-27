@@ -11,6 +11,7 @@ import com.adempolat.eterationshoppingapp.data.dao.toProduct
 import com.adempolat.eterationshoppingapp.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -39,11 +40,13 @@ class ProductViewModel @Inject constructor(
     private val _models = MutableLiveData<List<String>>()
     val models: LiveData<List<String>> get() = _models
 
+    private lateinit var filterProducts: List<Product>
+
     private var currentPage = 1
 
     private var selectedBrands = mutableSetOf<String>()
     private var selectedModels = mutableSetOf<String>()
-    private var sortOrder: SortOrder = SortOrder.OLD_TO_NEW
+    private var sortOrder: SortOrder = SortOrder.Sort_Order
 
     init {
         loadProducts()
@@ -52,13 +55,13 @@ class ProductViewModel @Inject constructor(
     }
 
     private fun loadBrandsAndModels() {
-//        viewModelScope.launch {
-//            val allProducts = repository.getProducts(currentPage)
-//            val uniqueBrands = allProducts.map { it.brand }.distinct()
-//            val uniqueModels = allProducts.map { it.model }.distinct()
-//            _brands.postValue(uniqueBrands)
-//            _models.postValue(uniqueModels)
-//        }
+        viewModelScope.launch {
+            val allProducts = repository.getProducts(1).firstOrNull() ?: listOf()
+            val uniqueBrands = allProducts.map { it.brand }.distinct()
+            val uniqueModels = allProducts.map { it.model }.distinct()
+            _brands.postValue(uniqueBrands)
+            _models.postValue(uniqueModels)
+        }
     }
 
     fun loadProducts() {
@@ -71,7 +74,7 @@ class ProductViewModel @Inject constructor(
                 }
                 _products.value = updatedProducts
                 //_filteredProducts.value = updatedProducts // Başlangıçta tüm ürünler gelsin
-                applyFilters()
+                applyFiltersAndSort()
             }
         }
     }
@@ -87,7 +90,7 @@ class ProductViewModel @Inject constructor(
                 }
                 val currentList = _products.value ?: listOf()
                 _products.value = currentList + updatedProducts
-                applyFilters()
+                applyFiltersAndSort()
             }
         }
     }
@@ -95,41 +98,47 @@ class ProductViewModel @Inject constructor(
 
     fun setSortOrder(order: SortOrder) {
         sortOrder = order
-        applyFilters()
+        applyFiltersAndSort()
     }
 
     fun setSelectedBrands(brands: Set<String>) {
         selectedBrands = brands.toMutableSet()
-        applyFilters()
+        applyFiltersAndSort()
     }
 
     fun setSelectedModels(models: Set<String>) {
         selectedModels = models.toMutableSet()
-        applyFilters()
+        applyFiltersAndSort()
     }
 
-    fun applyFilters() {
-        val products = _products.value ?: listOf()
+    fun applyFiltersAndSort() {
+        val filteredList = filterProducts(_products.value ?: listOf())
+        _filteredProducts.value = sortProducts(filteredList)
+    }
+
+    private fun filterProducts(products: List<Product>): List<Product> {
         var result = products
 
-        // Uygun filtreleme işlemleri
         if (selectedBrands.isNotEmpty()) {
-            result = result.filter { it.name in selectedBrands }
+            result = result.filter { it.brand in selectedBrands }
         }
         if (selectedModels.isNotEmpty()) {
-            result = result.filter { it.description in selectedModels }
+            result = result.filter { it.model in selectedModels }
         }
-        result = when (sortOrder) {
-            SortOrder.OLD_TO_NEW -> result.sortedBy { it.createdAt }
-            SortOrder.NEW_TO_OLD -> result.sortedByDescending { it.createdAt }
-            SortOrder.PRICE_HIGH_TO_LOW -> result.sortedByDescending { it.price }
-            SortOrder.PRICE_LOW_TO_HIGH -> result.sortedBy { it.price }
-            SortOrder.A_TO_Z -> result.sortedBy { it.name }
-            SortOrder.Z_TO_A -> result.sortedByDescending { it.name }
-            else-> result
-        }
+        filterProducts=result
+        return result
+    }
 
-        _filteredProducts.value = result
+    private fun sortProducts(products: List<Product>): List<Product> {
+        return when (sortOrder) {
+            SortOrder.OLD_TO_NEW -> products.sortedBy { it.createdAt }
+            SortOrder.NEW_TO_OLD -> products.sortedByDescending { it.createdAt }
+            SortOrder.PRICE_HIGH_TO_LOW -> products.sortedByDescending { it.price }
+            SortOrder.PRICE_LOW_TO_HIGH -> products.sortedBy { it.price }
+            SortOrder.A_TO_Z -> products.sortedBy { it.name }
+            SortOrder.Z_TO_A -> products.sortedByDescending { it.name }
+            else -> products
+        }
     }
 
     private fun updateFavoriteProducts() {

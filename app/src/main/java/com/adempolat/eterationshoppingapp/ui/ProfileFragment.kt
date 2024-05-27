@@ -79,7 +79,7 @@ class ProfileFragment : Fragment() {
         }
 
         // Harcama geçmişini gösterme/gizleme
-        binding.toggleHistoryRadioButton.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchPurchaseHistory.setOnCheckedChangeListener() { _, isChecked ->
             binding.purchaseHistoryRecyclerView.visibility = if (isChecked) View.VISIBLE else View.GONE
         }
     }

@@ -7,5 +7,7 @@ data class Product(
     val imageUrl: String?,
     val description: String,
     val createdAt:String,
-    var isFavorite: Boolean = false // Favori durumu için alan
+    var isFavorite: Boolean = false, // Favori durumu için alan
+    val model: String= "", // Yeni alan
+    val brand: String= "" // Yeni alan
 )

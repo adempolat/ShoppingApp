@@ -10,7 +10,10 @@
 
         <!-- Tema ve diğer stil tanımlamaları -->
 
-        <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-            <item name="queryBackground">@android:color/transparent</item>
-        </style>
+    <style name="CustomSearchView" parent="Widget.AppCompat.SearchView">
+        <item name="queryBackground">@drawable/search_view_background</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:iconifiedByDefault">false</item>
+    </style>
 </resources>

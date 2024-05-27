@@ -1,10 +1,14 @@
 package com.adempolat.eterationshoppingapp.ui
 
+import android.R
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
@@ -57,8 +61,13 @@ class ProductListFragment : Fragment() {
 
         productViewModel.filteredProducts.observe(viewLifecycleOwner) { products ->
             productAdapter.updateProducts(products)
+            binding.recyclerView.scrollToPosition(0)
             isLoading = false
         }
+
+
+        setupSortSpinner()
+
 
         binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
@@ -74,6 +83,27 @@ class ProductListFragment : Fragment() {
         binding.filterButton.setOnClickListener {
             val filterFragment = FilterFragment()
             filterFragment.show(parentFragmentManager, "FilterFragment")
+        }
+    }
+    private fun setupSortSpinner() {
+        val sortOptions = arrayOf("Sort Order", "High to Low", "Low to High", "A to Z", "Z to A")
+        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, sortOptions)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.sortSpinner.adapter = adapter
+
+        binding.sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>, view: View?, position: Int, id: Long) {
+                when (position) {
+                    0 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.Sort_Order)
+                    1 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.PRICE_HIGH_TO_LOW)
+                    2 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.PRICE_LOW_TO_HIGH)
+                    3 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.A_TO_Z)
+                    4 -> productViewModel.setSortOrder(ProductViewModel.SortOrder.Z_TO_A)
+                }
+                productViewModel.applyFilters()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {}
         }
     }
 

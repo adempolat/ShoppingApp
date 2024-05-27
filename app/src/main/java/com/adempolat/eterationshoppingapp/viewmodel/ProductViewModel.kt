@@ -10,6 +10,8 @@ import com.adempolat.eterationshoppingapp.data.dao.toFavoriteItemEntity
 import com.adempolat.eterationshoppingapp.data.dao.toProduct
 import com.adempolat.eterationshoppingapp.repository.ProductRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -18,10 +20,8 @@ class ProductViewModel @Inject constructor(
     private val repository: ProductRepository
 ) : ViewModel() {
 
-    // Diğer kodlar
-
     enum class SortOrder {
-        OLD_TO_NEW, NEW_TO_OLD, PRICE_HIGH_TO_LOW, PRICE_LOW_TO_HIGH
+        Sort_Order,OLD_TO_NEW, NEW_TO_OLD, PRICE_HIGH_TO_LOW, PRICE_LOW_TO_HIGH, A_TO_Z, Z_TO_A
     }
 
     private val _products = MutableLiveData<List<Product>>()
@@ -33,9 +33,13 @@ class ProductViewModel @Inject constructor(
     private val _favoriteProducts = MutableLiveData<List<Product>>()
     val favoriteProducts: LiveData<List<Product>> get() = _favoriteProducts
 
+    private val _brands = MutableLiveData<List<String>>()
+    val brands: LiveData<List<String>> get() = _brands
+
+    private val _models = MutableLiveData<List<String>>()
+    val models: LiveData<List<String>> get() = _models
+
     private var currentPage = 1
-    var brands: List<String> = listOf("Bentley", "Aston Martin", "Rolls")
-    var models: List<String> = listOf("11", "12 Pro", "13 Pro Max")
 
     private var selectedBrands = mutableSetOf<String>()
     private var selectedModels = mutableSetOf<String>()
@@ -44,7 +48,17 @@ class ProductViewModel @Inject constructor(
     init {
         loadProducts()
         loadFavoriteProducts()
+        loadBrandsAndModels()
+    }
 
+    private fun loadBrandsAndModels() {
+//        viewModelScope.launch {
+//            val allProducts = repository.getProducts(currentPage)
+//            val uniqueBrands = allProducts.map { it.brand }.distinct()
+//            val uniqueModels = allProducts.map { it.model }.distinct()
+//            _brands.postValue(uniqueBrands)
+//            _models.postValue(uniqueModels)
+//        }
     }
 
     fun loadProducts() {
@@ -56,6 +70,7 @@ class ProductViewModel @Inject constructor(
                     product
                 }
                 _products.value = updatedProducts
+                //_filteredProducts.value = updatedProducts // Başlangıçta tüm ürünler gelsin
                 applyFilters()
             }
         }
@@ -96,21 +111,26 @@ class ProductViewModel @Inject constructor(
     fun applyFilters() {
         val products = _products.value ?: listOf()
         var result = products
-//        if (selectedBrands.isNotEmpty()) {
-//            result = result.filter { it.name in selectedBrands }
-//        }
-//        if (selectedModels.isNotEmpty()) {
-//            result = result.filter { it.description in selectedModels }
-//        }
-//        result = when (sortOrder) {
-//            SortOrder.OLD_TO_NEW -> result.sortedBy { it.createdAt }
-//            SortOrder.NEW_TO_OLD -> result.sortedByDescending { it.createdAt }
-//            SortOrder.PRICE_HIGH_TO_LOW -> result.sortedByDescending { it.price }
-//            SortOrder.PRICE_LOW_TO_HIGH -> result.sortedBy { it.price }
-//        }
+
+        // Uygun filtreleme işlemleri
+        if (selectedBrands.isNotEmpty()) {
+            result = result.filter { it.name in selectedBrands }
+        }
+        if (selectedModels.isNotEmpty()) {
+            result = result.filter { it.description in selectedModels }
+        }
+        result = when (sortOrder) {
+            SortOrder.OLD_TO_NEW -> result.sortedBy { it.createdAt }
+            SortOrder.NEW_TO_OLD -> result.sortedByDescending { it.createdAt }
+            SortOrder.PRICE_HIGH_TO_LOW -> result.sortedByDescending { it.price }
+            SortOrder.PRICE_LOW_TO_HIGH -> result.sortedBy { it.price }
+            SortOrder.A_TO_Z -> result.sortedBy { it.name }
+            SortOrder.Z_TO_A -> result.sortedByDescending { it.name }
+            else-> result
+        }
+
         _filteredProducts.value = result
     }
-
 
     private fun updateFavoriteProducts() {
         viewModelScope.launch {
